@@ -10,8 +10,6 @@ Sentiment Analysis Based On Deeping Learning from Amazon Product Review
 1. After running `process_data.ipynb`, you will have two txt files: `review_list.txt` and `overall_list.txt`.
 2. `review_list.txt`: Includes tokenized, lemmatized, stop_word processed data.
 3. `overall_list.txt`: Labels for each training review sample. 0: Pos, 1: Neg.
-<br>
-
 #### Next Step:
 Please create `new branch` to work on each team member's deep learning process.
 
