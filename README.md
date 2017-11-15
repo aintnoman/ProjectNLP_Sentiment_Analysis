@@ -6,8 +6,6 @@ Sentiment Analysis Based On Deeping Learning from Amazon Product Review
     - `Jupiter Notebook`
     -  `NLTK`
 2. For reason of license of training data, please [download](http://jmcauley.ucsd.edu/data/amazon/) `Digital_Music_5.json` and put it in with `.ipynb` in the same directory.
-<br>
-
 #### Processed Data:
 1. After running `process_data.ipynb`, you will have two txt files: `review_list.txt` and `overall_list.txt`.
 2. `review_list.txt`: Includes tokenized, lemmatized, stop_word processed data.
