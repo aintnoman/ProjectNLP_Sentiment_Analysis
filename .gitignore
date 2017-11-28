@@ -1,3 +1,8 @@
 overall_list.txt
 review_list.txt
 .ipynb_checkpoints/process_data-checkpoint.ipynb
+music_review.csv
+.idea/ProjectNLP_Sentiment_Analysis.iml
+.ipynb_checkpoints/VectorConverter-checkpoint.ipynb
+__pycache__/csv_process.cpython-36.pyc
+__pycache__/rnn.cpython-36.pyc
