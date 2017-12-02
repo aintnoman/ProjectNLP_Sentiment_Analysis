@@ -1,5 +1,5 @@
-import tensorflow as tf
 import numpy as np
+import tensorflow as tf
 
 
 def create_batch_generator(x, y=None, batch_size=64):
@@ -16,7 +16,8 @@ def create_batch_generator(x, y=None, batch_size=64):
 
 class SentimentRNN(object):
     def __init__(self, n_words, seq_len=200, lstm_size=256,
-                 num_layers=1, batch_size=64, learning_rate=0.0001, embed_size=200):
+                 num_layers=1, batch_size=64, learning_rate=0.0001,
+                 embed_size=200):
         self.n_words = n_words
         self.seq_len = seq_len
         self.lstm_size = lstm_size
@@ -40,47 +41,47 @@ class SentimentRNN(object):
 
         tf_keepprob = tf.placeholder(tf.float32, name='tf_keepprob')
 
-        # embedding layer
-        embedding = tf.Variable(tf.random_uniform((self.n_words, self.embed_size), minval=-1, maxval=1),
-                                name='embedding')
+        # Embedding layer
+        embedding = tf.Variable(tf.random_uniform((self.n_words, self.embed_size), minval=-1, maxval=1), name='embedding')
         embed_x = tf.nn.embedding_lookup(embedding, tf_x, name='embeded_x')
 
-        # LSTM cell and stack together
+        # 3. Create cells according to desired number of layers
         cells = tf.contrib.rnn.MultiRNNCell(
+            # 2. Apply dropout to RNN cells
             [tf.contrib.rnn.DropoutWrapper(
+                # 1. Create RNN cells
                 tf.contrib.rnn.BasicLSTMCell(self.lstm_size),
                 output_keep_prob=tf_keepprob)
                 for i in range(self.num_layers)])
 
-        # initial state
+        # Initial state
         self.initial_state = cells.zero_state(
             self.batch_size, tf.float32)
-        print(' << initial state >> ', self.initial_state)
-
+        print('Initial State: ', self.initial_state)
+        # Creating RNN
         lstm_outputs, self.final_state = tf.nn.dynamic_rnn(
             cells, embed_x, initial_state=self.initial_state)
 
-        print('\n << lstm output >>', lstm_outputs)
-        print('\n << final state >>', self.final_state)
+        print('\nLSTM Output: ', lstm_outputs)
+        print('\nFinal State: ', self.final_state)
 
-        # fc layer
+        # Creating Fully Connected Layer to get logits
         logits = tf.layers.dense(inputs=lstm_outputs[:, -1], units=1, activation=None, name='logits')
-
         logits = tf.squeeze(logits, name='logits_squeezed')
-        print('\n << logits >>', logits)
+        print('\nLogits: ', logits)
 
         y_proba = tf.nn.sigmoid(logits, name='probabilities')
         predictions = {
             'probabilities': y_proba,
             'labels': tf.cast(tf.round(y_proba), tf.int32, name='labels')
         }
-        print('\n << predictions >> ', predictions)
+        print('\nPredictions: ', predictions)
 
-        # cost function
+        # Cost Function
         cost = tf.reduce_mean(
             tf.nn.sigmoid_cross_entropy_with_logits(labels=tf_y, logits=logits), name='cost')
 
-        # optimizer
+        # Optimizer
         optimizer = tf.train.AdamOptimizer(self.learning_rate)
         train_op = optimizer.minimize(cost, name='train_op')
 

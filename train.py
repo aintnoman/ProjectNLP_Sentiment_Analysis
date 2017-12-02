@@ -1,10 +1,9 @@
-import pyprind
-import pandas as pd
-from string import  punctuation
-import re
 import os
+import pyprind
 import numpy as np
+import pandas as pd
 from collections import Counter
+from string import punctuation
 
 # Read csv file
 from rnn import SentimentRNN
